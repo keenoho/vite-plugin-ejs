@@ -1,6 +1,6 @@
 const ejs = require('ejs');
 
-function ViteEjsPlugin(data = {}, ejsOption = {}, beforeRender) {
+function ViteEjsPlugin(data = {}, ejsOption = {}) {
   let config;
 
   return {
@@ -14,23 +14,25 @@ function ViteEjsPlugin(data = {}, ejsOption = {}, beforeRender) {
       enforce: 'pre',
       transform(html) {
         try {
-          if (typeof data === 'function') {
-            data = data(config);
+          let _data = {
+            env: config.env,
+            command: config.command,
+            mode: config.mode,
+            NODE_ENV: process.env.NODE_ENV || config.mode,
+            ...data,
           }
 
-          if (typeof beforeRender === 'function') {
-            data = beforeRender(config);
+          if (typeof data === 'function') {
+            const extra = data(config)
+            _data = {
+              ..._data,
+              ...extra
+            };
           }
 
           html = ejs.render(
             html,
-            {
-              env: config.env,
-              command: config.command,
-              mode: config.mode,
-              NODE_ENV: process.env.NODE_ENV || config.mode,
-              ...data,
-            },
+            _data,
             ejsOption
           );
         } catch (e) {
