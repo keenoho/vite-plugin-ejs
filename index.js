@@ -19,6 +19,7 @@ function ViteEjsPlugin(data = {}, ejsOption = {}) {
           html = ejs.render(
             html,
             {
+              env: config.command,
               command: config.command,
               mode: config.mode,
               NODE_ENV: process.env.NODE_ENV || config.mode,
