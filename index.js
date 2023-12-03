@@ -1,4 +1,4 @@
-const ejs = require('ejs');
+import ejs from 'ejs';
 
 function ViteEjsPlugin(data = {}, ejsOption = {}) {
   let config;
@@ -11,8 +11,8 @@ function ViteEjsPlugin(data = {}, ejsOption = {}) {
     },
 
     transformIndexHtml: {
-      enforce: 'pre',
-      transform(html) {
+      order: 'pre',
+      handler(html) {
         try {
           let _data = {
             env: config.env,
@@ -45,6 +45,4 @@ function ViteEjsPlugin(data = {}, ejsOption = {}) {
   };
 }
 
-ViteEjsPlugin.default = ViteEjsPlugin;
-
-module.exports = ViteEjsPlugin;
+export default ViteEjsPlugin;
