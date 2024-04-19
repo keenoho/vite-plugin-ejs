@@ -20,21 +20,17 @@ function ViteEjsPlugin(data = {}, ejsOption = {}) {
             mode: config.mode,
             NODE_ENV: process.env.NODE_ENV || config.mode,
             ...data,
-          }
+          };
 
           if (typeof data === 'function') {
-            const extra = data(config)
+            const extra = data(config);
             _data = {
               ..._data,
-              ...extra
+              ...extra,
             };
           }
 
-          html = ejs.render(
-            html,
-            _data,
-            ejsOption
-          );
+          html = ejs.render(html, _data, ejsOption);
         } catch (e) {
           return e.message;
         }
